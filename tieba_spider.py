@@ -23,7 +23,7 @@ def get_content(base_url):
     soup = BeautifulSoup(html,'lxml')
     # 找到所有具有‘ j_thread_list clearfix’属性的li标签。返回一个列表类型。
     LiTags = soup.findAll('li',attrs={'class': ' j_thread_list clearfix'})
-    print(LiTags)
+    # print(LiTags)
     # 通过循环找到每个帖子里需要的信息
     for li in LiTags:
         comment = {}
@@ -42,7 +42,7 @@ def get_content(base_url):
             comments.append(comment)
         except:
             print('出错了')
-    print(comments)
+    # print(comments)
     return comments
 # http://tieba.baidu.com/f?ie=utf-8&kw=python3&red_tag=z1678996858
 # http://tieba.baidu.com/f?kw=python3&ie=utf-8&pn=50
