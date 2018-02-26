@@ -1,25 +1,26 @@
+#coding=utf-8
 import requests
 from bs4 import BeautifulSoup
 import time
-import lxml
 
 
 base_url = 'http://tieba.baidu.com/f?ie=utf-8&kw=python3'
 deep = 3
-def get_html (base_url):
+def get_html (url):
     try:
-        r = requests.get(base_url,timeout=30)
+        r = requests.get(url,timeout=30)
         r.raise_for_status()
-        # r.endcodding = r.apparent_endconding
-        r.encoding = 'utf-8'
+        r.encoding = ('r.apparent_encoding','ignore')
+        # r.encoding = 'utf-8'
+        # print(r.encoding)
         return r.text
     except:
         return 'error'
 # //*[@id="thread_list"]/li/div/div[2]/div[1]/div[1]/a
-def get_content(base_url):
+def get_content(url):
     comments = []
     # 首先，把需要爬取信息的网页下载到本地
-    html = get_html(base_url)
+    html = get_html(url)
     soup = BeautifulSoup(html,'lxml')
     # 找到所有具有‘ j_thread_list clearfix’属性的li标签。返回一个列表类型。
     LiTags = soup.findAll('li',attrs={'class': ' j_thread_list clearfix'})
@@ -37,8 +38,6 @@ def get_content(base_url):
                 'span', attrs={'class': 'tb_icon_author '}).text.strip()
             comment['time'] = li.find(
                 'span', attrs={'class': 'pull-right is_show_create_time'}).text.strip()
-            # comment['replyNum'] = li.find(
-            #     'span', attrs={'class': 'threadlist_rep_num center_text'}).text.strip()
             comments.append(comment)
         except:
             print('出错了')
@@ -57,7 +56,7 @@ def Out2file(dict):
 
         print('当前页面爬取完成')
 
-
+url1 = 'http://tieba.baidu.com/f?kw=python3&ie=utf-8'
 def main (base_url, deep):
     url_list = []
     # 将所有需要爬取的url存入列表
